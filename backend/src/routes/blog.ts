@@ -31,7 +31,29 @@ blogRouter.use("/*", async (c, next) => {
   }
 });
 
-blogRouter.get("/", async (c) => {
+blogRouter.post("/", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const body = await c.req.json();
+  const userId = c.get("userId");
+  try {
+    const post = await prisma.post.create({
+      data: {
+        title: body.title,
+        content: body.content,
+        authorId: userId,
+      },
+    });
+    return c.json({ id: post.id });
+  } catch (e) {
+    c.status(403);
+    return c.json({ error: e });
+  }
+});
+
+blogRouter.put("/", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -55,28 +77,6 @@ blogRouter.get("/", async (c) => {
   } catch (e) {
     c.status(403);
     return c.json({ error: e, myguessoferror: "id not correct" });
-  }
-});
-
-blogRouter.post("/", async (c) => {
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-
-  const body = await c.req.json();
-  const userId = c.get("userId");
-  try {
-    const post = await prisma.post.create({
-      data: {
-        title: body.title,
-        content: body.content,
-        authorId: userId,
-      },
-    });
-    return c.json({ id: post.id });
-  } catch (e) {
-    c.status(403);
-    return c.json({ error: e });
   }
 });
 

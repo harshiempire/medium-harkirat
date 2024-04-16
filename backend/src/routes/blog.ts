@@ -19,15 +19,19 @@ const blogRouter = new Hono<{
 
 blogRouter.use("/*", async (c, next) => {
   const secret = c.env.SECRET_KEY;
-  const token = c.req.header("Authorization") || "";
-  const decoded = await verify(token, secret);
-
-  if (decoded.id) {
-    c.set("userId", decoded.id);
-    await next();
+  const token = c.req.header("Authorization");
+  if (token) {
+    const decoded = await verify(token, secret);
+    if (decoded.id) {
+      c.set("userId", decoded.id);
+      await next();
+    } else {
+      c.status(403);
+      return c.text("Invalid token");
+    }
   } else {
     c.status(403);
-    return c.text("Invalid token");
+    return c.json("No token found");
   }
 });
 

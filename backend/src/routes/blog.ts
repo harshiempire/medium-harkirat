@@ -12,7 +12,6 @@ type Bindings = {
 type Variables = {
   userId: string;
 };
-
 const blogRouter = new Hono<{
   Bindings: Bindings;
   Variables: Variables;
@@ -79,7 +78,7 @@ blogRouter.put("/", async (c) => {
   const userId = c.get("userId");
   const { success } = updateBlogInput.safeParse(body);
 
-  if (!success) {
+  if (!success) {    
     return c.json({ error: "Input not properly provided" });
   }
   try {

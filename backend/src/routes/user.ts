@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign } from "hono/jwt";
+import { signUpInput, signInInput } from "@alleharshi/common-medium";
 
 const userRouter = new Hono<{
   Bindings: {
@@ -20,6 +21,11 @@ userRouter.post("/signup", async (c) => {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
+  const { success } = signUpInput.safeParse(body);
+
+  if (!success) {
+    return c.json({ error: "Input not properly provided" });
+  }
 
   try {
     const user = await prisma.user.create({
@@ -45,6 +51,11 @@ userRouter.post("/signin", async (c) => {
   });
 
   const body = await c.req.json();
+  const { success } = signInInput.safeParse(body);
+
+  if (!success) {
+    return c.json({ error: "Input not properly provided" });
+  }
   const user = await prisma.user.findUnique({ where: { email: body.email } });
 
   if (!user) {
@@ -52,9 +63,9 @@ userRouter.post("/signin", async (c) => {
     return c.json({ error: "Invalid credentials" });
   }
 
-  if(user.password!=body.password){
-    c.status(403)
-    return c.json({error:"Invalid credentials"})
+  if (user.password != body.password) {
+    c.status(403);
+    return c.json({ error: "Invalid credentials" });
   }
 
   const secret = c.env.SECRET_KEY;

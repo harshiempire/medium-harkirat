@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { Hono } from "hono";
 import { verify } from "hono/jwt";
 import { withAccelerate } from "@prisma/extension-accelerate";
+import { createBlogInput, updateBlogInput } from "@alleharshi/common-medium";
 
 type Bindings = {
   DATABASE_URL: string;
@@ -20,24 +21,27 @@ const blogRouter = new Hono<{
 blogRouter.use("/*", async (c, next) => {
   const secret = c.env.SECRET_KEY;
   const token = c.req.header("Authorization");
-  if (token) {
-    const decoded = await verify(token, secret);
-    if (decoded.id) {
-      c.set("userId", decoded.id);
-      await next();
+  try {
+    if (token) {
+      const decoded = await verify(token, secret);
+      if (decoded.id) {
+        c.set("userId", decoded.id);
+        await next();
+      } else {
+        c.status(403);
+        return c.text("Invalid token");
+      }
     } else {
       c.status(403);
-      return c.text("Invalid token");
+      return c.json({ error: "No token found" });
     }
-  } else {
+  } catch (e) {
     c.status(403);
-    return c.json("No token found");
+    return c.json({ error: "User Not logged in" });
   }
 });
 
-blogRouter.get("/",async()=>{
-  
-})
+blogRouter.get("/", async () => {});
 
 blogRouter.post("/", async (c) => {
   const prisma = new PrismaClient({
@@ -46,6 +50,11 @@ blogRouter.post("/", async (c) => {
 
   const body = await c.req.json();
   const userId = c.get("userId");
+  const { success } = createBlogInput.safeParse(body);
+
+  if (!success) {
+    return c.json({ error: "Input not properly provided" });
+  }
   try {
     const blog = await prisma.blog.create({
       data: {
@@ -68,7 +77,11 @@ blogRouter.put("/", async (c) => {
 
   const body = await c.req.json();
   const userId = c.get("userId");
+  const { success } = updateBlogInput.safeParse(body);
 
+  if (!success) {
+    return c.json({ error: "Input not properly provided" });
+  }
   try {
     const updatedPost = await prisma.blog.update({
       where: {
@@ -77,7 +90,7 @@ blogRouter.put("/", async (c) => {
       },
       data: {
         title: body.title,
-        content: body.content,        
+        content: body.content,
       },
     });
     c.status(200);
@@ -88,6 +101,15 @@ blogRouter.put("/", async (c) => {
   }
 });
 
+//Todo: Add pagination to the bulk
+blogRouter.get("/bulk", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const blogs = await prisma.blog.findMany();
+
+  return c.json(blogs);
+});
 blogRouter.get("/:id", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -106,16 +128,6 @@ blogRouter.get("/:id", async (c) => {
     c.status(403);
     return c.json({ error: e });
   }
-  return c.text("Hello Blog!");
-});
-
-blogRouter.get("/bulk", async (c) => {
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-  const blogs = await prisma.blog.findMany();
-
-  return c.json(blogs);
 });
 
 export { blogRouter };

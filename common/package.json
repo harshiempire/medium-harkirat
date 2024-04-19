@@ -1,5 +1,5 @@
 {
-  "name": "common",
+  "name": "@alleharshi/common-medium",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@alleharshi/common-medium": "^1.0.0",
     "zod": "^3.22.4"
   }
 }

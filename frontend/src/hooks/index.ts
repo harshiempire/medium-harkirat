@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import { useQuery } from "react-query";
 
 export interface Blog {
   content: string;
@@ -12,25 +13,22 @@ export interface Blog {
 }
 
 export const useBlog = ({ id }: { id: string }) => {
-  const [loading, setLoading] = useState(true);
-  const [blog, setBlog] = useState<Blog>();
-
-  useEffect(() => {
-    axios
-      .get(`${BACKEND_URL}/api/v1/blog/${id}`, {
+  const { data, error, isLoading } = useQuery(
+    ['blog', id], // cache key
+    async () => {
+      const response = await axios.get(`${BACKEND_URL}/api/v1/blog/${id}`, {
         headers: {
-          Authorization: localStorage.getItem("token"),
+          Authorization: localStorage.getItem('token'),
         },
-      })
-      .then((response) => {
-        setBlog(response.data.blog);
-        setLoading(false);
       });
-  }, [id]);
+      return response.data.blog;
+    }
+  );
 
   return {
-    loading,
-    blog,
+    loading: isLoading,
+    blog: data,
+    error,
   };
 };
 export const useBlogs = () => {

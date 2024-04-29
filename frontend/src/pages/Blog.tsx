@@ -4,15 +4,11 @@ import { Spinner } from "../components/Spinner";
 import { useBlog } from "../hooks";
 import { useParams } from "react-router-dom";
 
-// atomFamilies/selectorFamilies
 export const Blog = () => {
   const { id } = useParams();
-  const { loading, blog } = useBlog({
-    id: id || "",
-  });
-  console.log("loading", loading, "blog", blog);
+  const { loading, blog, error } = useBlog({ id: id || "" });
 
-  if (loading || !blog) {
+  if (loading) {
     return (
       <div>
         <Appbar />
@@ -25,6 +21,11 @@ export const Blog = () => {
       </div>
     );
   }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div>
       <FullBlog blog={blog} />

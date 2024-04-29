@@ -23,7 +23,11 @@ export const Blog = () => {
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <div>
+        Error: <span>{JSON.stringify(error)}</span>
+      </div>
+    );
   }
 
   return (

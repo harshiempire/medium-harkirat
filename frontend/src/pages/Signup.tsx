@@ -1,12 +1,13 @@
+import { Auth } from "../components/Auth";
+import Quote from "../components/Quote";
+
 function Signup() {
   return (
-    <div>
-      <embed
-        src="KR21 COMPETATIVE PROGRAMING LAB MANUAL copy.pdf"
-        type="application/pdf"
-        width="100%"
-        height="800px"
-      />
+    <div className="grid lg:grid-cols-2 ">
+      <Auth type="signup" />
+      <div className="hidden lg:block">
+        <Quote />
+      </div>
     </div>
   );
 }

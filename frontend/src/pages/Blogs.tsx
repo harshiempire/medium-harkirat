@@ -3,8 +3,21 @@ import { BlogCard } from "../components/BlogCard";
 import { BlogSkeleton } from "../components/BlogSkeleton";
 import { useBlogs } from "../hooks";
 
+type BlogType = {
+  content: string;
+  title: string;
+  id: number;
+  author: {
+    name: string;
+  };
+};
+
 export const Blogs = () => {
-  const { loading, blogs } = useBlogs();
+  const { loading, blogs, error } = useBlogs();
+
+  if (error) {
+    return <div>{JSON.stringify(error)}</div>;
+  }
 
   if (loading) {
     return (
@@ -28,7 +41,7 @@ export const Blogs = () => {
       <Appbar />
       <div className="flex justify-center">
         <div>
-          {blogs.map((blog) => (
+          {blogs.map((blog: BlogType) => (
             <BlogCard
               key={blog.id}
               id={blog.id}

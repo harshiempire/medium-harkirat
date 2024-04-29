@@ -78,7 +78,7 @@ blogRouter.put("/", async (c) => {
   const userId = c.get("userId");
   const { success } = updateBlogInput.safeParse(body);
 
-  if (!success) {    
+  if (!success) {
     return c.json({ error: "Input not properly provided" });
   }
   try {
@@ -102,23 +102,28 @@ blogRouter.put("/", async (c) => {
 
 //Todo: Add pagination to the bulk
 blogRouter.get("/bulk", async (c) => {
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-  const blogs = await prisma.blog.findMany({
-    select: {
-      content: true,
-      title: true,
-      id: true,
-      author: {
-        select: {
-          name: true,
+  try {
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    const blogs = await prisma.blog.findMany({
+      select: {
+        content: true,
+        title: true,
+        id: true,
+        author: {
+          select: {
+            name: true,
+          },
         },
       },
-    },
-  });
+    });
 
-  return c.json({ blogs });
+    return c.json({ blogs });
+  } catch (e) {
+    c.status(403);
+    return c.json({ error: e });
+  }
 });
 blogRouter.get("/:id", async (c) => {
   const prisma = new PrismaClient({

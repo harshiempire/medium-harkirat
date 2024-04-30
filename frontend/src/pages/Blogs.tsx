@@ -2,6 +2,7 @@ import { Appbar } from "../components/AppBar";
 import { BlogCard } from "../components/BlogCard";
 import { BlogSkeleton } from "../components/BlogSkeleton";
 import { useBlogs } from "../hooks";
+import Alert from "../components/Alert";
 
 type BlogType = {
   content: string;
@@ -16,7 +17,12 @@ export const Blogs = () => {
   const { loading, blogs, error } = useBlogs();
 
   if (error) {
-    return <div>{JSON.stringify(error)}</div>;
+    return (
+      <Alert
+        route={`/signin`}
+        error={`${error.response.data.error} or User not signed in `}
+      />
+    );
   }
 
   if (loading) {

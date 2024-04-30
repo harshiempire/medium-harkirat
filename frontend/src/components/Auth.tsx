@@ -6,6 +6,8 @@ import { SignInInput, SignUpInput } from "@alleharshi/common-medium";
 import { Link, useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../config";
 import axios from "axios";
+import clsx from "clsx";
+import { toast } from "sonner";
 
 interface AuthPropsTypes {
   type: "signin" | "signup";
@@ -13,6 +15,7 @@ interface AuthPropsTypes {
 
 export const Auth = ({ type }: AuthPropsTypes) => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPostInputs((c) => ({
       ...c,
@@ -28,21 +31,35 @@ export const Auth = ({ type }: AuthPropsTypes) => {
 
   async function sendRequest() {
     try {
+      setIsLoading(true);
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/user/${type == "signin" ? "signin" : "signup"}`,
         postInputs
       );
       const jwt = await response.data;
+      if (!jwt.token) {
+        setIsLoading(false);
+        toast.error(`Invalid Credentials`);
+        return;
+      }
       localStorage.setItem("token", jwt.token);
+      setIsLoading(false);
+      toast.success("Logged in successfully");
       navigate("/blogs");
     } catch (e) {
+      setIsLoading(false);
+      toast.error(`${e}, Wrong Credentials`, { duration: 3000 });
       console.log(e);
     }
   }
 
   // lg:mx-28 md:mx-48 mx-32
   return type == "signup" ? (
-    <div className="flex justify-center flex-col h-screen mx-auto ">
+    <div
+      className={clsx("flex justify-center flex-col h-screen mx-auto", {
+        "opacity-75": isLoading === true,
+      })}
+    >
       <div className="">
         <Heading
           mainText="Create an Account"
@@ -78,13 +95,19 @@ export const Auth = ({ type }: AuthPropsTypes) => {
             onChange={onChange}
           />
           <div className="mt-5">
-            <Button onClick={sendRequest}>Sign Up</Button>
+            <Button loading={isLoading} onClick={sendRequest}>
+              Sign Up
+            </Button>
           </div>
         </div>
       </div>
     </div>
   ) : (
-    <div className="min-h-screen grid lg:grid-cols-2 grid-cols-1">
+    <div
+      className={clsx("min-h-screen grid lg:grid-cols-2 grid-cols-1", {
+        "opacity-75": isLoading === true,
+      })}
+    >
       <div className="flex flex-col justify-center p-12 space-y-8 bg-white">
         <div className="text-sm uppercase tracking-wider text-gray-500">
           New here?
@@ -100,16 +123,16 @@ export const Auth = ({ type }: AuthPropsTypes) => {
             placeholder="name@example.com"
             type="email"
             name="email"
-            value={postInputs.email} // you need to define emailValue and handle its change
-            onChange={onChange} // you need to define setEmailValue
+            value={postInputs.email}
+            onChange={onChange}
           />
           <InputBox
             label="Password"
             placeholder="••••••••"
             type="password"
             name="password"
-            value={postInputs.password} // you need to define passwordValue and handle its change
-            onChange={onChange} // you need to define setPasswordValue
+            value={postInputs.password}
+            onChange={onChange}
           />
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
@@ -122,7 +145,9 @@ export const Auth = ({ type }: AuthPropsTypes) => {
               Forgot password?
             </Link>
           </div>
-          <Button onClick={sendRequest}>Sign In</Button>
+          <Button loading={isLoading} onClick={sendRequest}>
+            Sign In
+          </Button>
         </form>
       </div>
       <div className="flex items-center justify-center p-12 bg-gray-100">

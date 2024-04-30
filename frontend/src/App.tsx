@@ -4,6 +4,7 @@ import { Signin } from "./pages/Signin";
 import { Blog } from "./pages/Blog";
 import { Blogs } from "./pages/Blogs";
 import { Publish } from "./pages/Publish";
+import { Toaster } from "sonner";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/publish" element={<Publish />} />
         </Routes>
       </BrowserRouter>
+      <Toaster richColors />
     </>
   );
 }

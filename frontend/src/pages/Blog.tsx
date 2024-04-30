@@ -29,7 +29,7 @@ export const Blog = () => {
     navigate("/blogs");
   }
   if (error) {
-    toast.error(`${error}`);
+    toast.error(`${error}, Blog with id not found`);
   }
 
   return (

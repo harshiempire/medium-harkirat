@@ -20,7 +20,7 @@ export const Blogs = () => {
     return (
       <Alert
         route={`/signin`}
-        error={`${error.response.data.error} or User not signed in `}
+        error={`User not signed in `}
       />
     );
   }

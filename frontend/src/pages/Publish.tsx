@@ -4,6 +4,7 @@ import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { ChangeEvent, useState } from "react";
 import NotePicker from "../components/NotePicker";
+import EditorJSComp from "../components/EditorJSComp";
 
 export const Publish = () => {
   const [title, setTitle] = useState("");
@@ -26,7 +27,8 @@ export const Publish = () => {
 
           <TextEditor
             onChange={(e) => {
-              setDescription(e.target.value);
+              console.log(e);
+              setDescription(e);
             }}
           />
           <button
@@ -56,29 +58,34 @@ export const Publish = () => {
   );
 };
 
-function TextEditor({
-  onChange,
-}: {
-  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-}) {
+function TextEditor({ onChange }: { onChange: (e: string) => void }) {
   return (
-    <div className="mt-2">
-      <div className="w-full mb-4 ">
-        <div className="flex items-center justify-between border">
-          <div className="my-2 bg-white rounded-b-lg w-full">
-            <label className="sr-only">Publish post</label>
-            <textarea
-              onChange={onChange}
-              id="editor"
-              rows={8}
-              className="focus:outline-none block w-full px-0 text-sm text-gray-800 bg-white border-0 pl-2"
-              placeholder="Write an article..."
-              required
-            />
-          </div>
-        </div>
-      </div>
-      <NotePicker />
-    </div>
+    // <div className="mt-2">
+    //   <div className="w-full mb-4 ">
+    //     <div className="flex items-center justify-between border">
+    //       <div className="my-2 bg-white rounded-b-lg w-full">
+    //         <label className="sr-only">Publish post</label>
+    //         <textarea
+    //           onChange={onChange}
+    //           id="editor"
+    //           rows={8}
+    //           className="focus:outline-none block w-full px-0 text-sm text-gray-800 bg-white border-0 pl-2"
+    //           placeholder="Write an article..."
+    //           required
+    //         />
+    //       </div>
+    //     </div>
+    //   </div>
+    <EditorJSComp
+      data={JSON.stringify({
+        type: "header",
+        data: {
+          text: "This is my awesome editor!",
+          level: 1,
+        },
+      })}
+      onChange={onChange}
+    />
+    // </div>
   );
 }

@@ -1,37 +1,31 @@
-import YooptaEditor, { createYooptaEditor } from "@yoopta/editor";
-import Paragraph from "@yoopta/paragraph";
-import Blockquote from "@yoopta/blockquote";
-import { useMemo } from "react";
-import LinkTool, { DefaultLinkToolRender } from "@yoopta/link-tool";
-import ActionMenu, { DefaultActionMenuRender } from "@yoopta/action-menu-list";
-import Toolbar, { DefaultToolbarRender } from "@yoopta/toolbar";
-import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
+import EditorJS from "@editorjs/editorjs";
+import Header from "@editorjs/header";
+import List from "@editorjs/list";
 
-const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
-
-const TOOLS = {
-  Toolbar: {
-    tool: Toolbar,
-    render: DefaultToolbarRender,
+const editor = new EditorJS({
+  /**
+   * Id of Element that should contain the Editor
+   */
+  holder: "editorjs",
+  inlineToolbar: ["link", "marker", "bold", "italic"],
+  /**
+   * Available Tools list.
+   * Pass Tool's class or Settings object for each Tool you want to use
+   */
+  tools: {
+    header: {
+      class: Header,
+      inlineToolbar: ["marker", "link"],
+      config: {
+        placeholder: "Header",
+      },
+      shortcut: "CMD+SHIFT+H",
+    },
+    list: {
+      class: List,
+      inlineToolbar: true,
+    },
   },
-  ActionMenu: {
-    tool: Toolbar,
-    render: DefaultActionMenuRender,
-  },
-  LinkTool: {
-    tool: LinkTool,
-    render: DefaultLinkToolRender,
-  },
-};
+});
 
-const plugins = [Paragraph, Blockquote];
-
-export default function Editor() {
-  const editor = useMemo(() => createYooptaEditor(), []);
-
-  return (
-    <div>
-      <YooptaEditor placeholder="Type text.." plugins={plugins} tools={TOOLS} marks={MARKS}/>
-    </div>
-  );
-}
+export {editor}

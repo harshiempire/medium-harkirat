@@ -3,6 +3,8 @@ import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { ChangeEvent, useState } from "react";
+import Tiptap from "../components/TipTap";
+import NotePicker from "../components/NotePicker";
 
 export const Publish = () => {
   const [title, setTitle] = useState("");
@@ -77,6 +79,7 @@ function TextEditor({
           </div>
         </div>
       </div>
+      <NotePicker />
     </div>
   );
 }

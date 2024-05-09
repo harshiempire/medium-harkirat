@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import EditorJS, { OutputData } from "@editorjs/editorjs";
+import { useEffect, useRef } from "react";
+import EditorJS from "@editorjs/editorjs";
 // @ts-ignore
 import Header from "@editorjs/header";
 // @ts-ignore
@@ -71,4 +71,3 @@ const EditorComponent = ({
 };
 
 export default EditorComponent;
-

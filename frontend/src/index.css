@@ -3,11 +3,24 @@
 @tailwind utilities;
 
 @layer base {
-    h1 {
-      @apply text-3xl;
-    }
-    h2 {
-      @apply text-2xl;
-    }
-    /* ... */
+  h1 {
+    @apply text-3xl;
+    @apply pt-4;
+    @apply pb-1;
+    @apply font-bold;
   }
+  h2 {
+    @apply text-2xl;
+    @apply pb-3;
+    @apply font-bold;
+  }
+  ul {
+    @apply list-disc;    
+  }
+  ol {
+    @apply list-decimal;
+  }
+  li{
+    @apply py-1.5
+  }
+}

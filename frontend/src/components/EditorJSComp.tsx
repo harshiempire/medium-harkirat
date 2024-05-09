@@ -1,9 +1,9 @@
-import React, { ChangeEvent, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import Paragraph from "@editorjs/paragraph";
 import List from "@editorjs/list";
-import Quote from '@editorjs/quote';
+import Quote from "@editorjs/quote";
 
 // const DEFAULT_INITIAL_DATA = {
 //   time: new Date().getTime(),
@@ -26,10 +26,7 @@ const EditorComponent = ({
         ejInstance.current = editor;
       },
       autofocus: true,
-      data: {
-        time: new Date().getTime(),
-        blocks: [JSON.parse(data)],
-      },
+      data: JSON.parse(data),
       onChange: async () => {
         const content = await editor.saver.save();
         onChange(JSON.stringify(content));
@@ -50,14 +47,14 @@ const EditorComponent = ({
           },
         },
         quote: {
-            class: Quote,
-            inlineToolbar: true,
-            shortcut: 'CMD+SHIFT+O',
-            config: {
-              quotePlaceholder: 'Enter a quote',
-              captionPlaceholder: 'Quote\'s author',
-            },
+          class: Quote,
+          inlineToolbar: true,
+          shortcut: "CMD+SHIFT+O",
+          config: {
+            quotePlaceholder: "Enter a quote",
+            captionPlaceholder: "Quote's author",
           },
+        },
       },
     });
   };

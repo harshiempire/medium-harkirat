@@ -2,8 +2,7 @@ import { Appbar } from "../components/AppBar";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
-import { ChangeEvent, useState } from "react";
-import NotePicker from "../components/NotePicker";
+import { useState } from "react";
 import EditorJSComp from "../components/EditorJSComp";
 
 export const Publish = () => {
@@ -26,6 +25,17 @@ export const Publish = () => {
           />
 
           <TextEditor
+            data={JSON.stringify({
+              time: 1715148112218,
+              blocks: [
+                {
+                  id: "-tQr_CUe_H",
+                  type: "header",
+                  data: { text: "This is heading 1", level: 1 },
+                },
+              ],
+              version: "2.29.1",
+            })}
             onChange={(e) => {
               console.log(e);
               setDescription(e);
@@ -58,7 +68,14 @@ export const Publish = () => {
   );
 };
 
-function TextEditor({ onChange }: { onChange: (e: string) => void }) {
+export function TextEditor({
+  data,
+  onChange,
+}: {
+  data: string;
+  onChange: (e: string) => void;
+}) {
+  console.log(data);
   return (
     // <div className="mt-2">
     //   <div className="w-full mb-4 ">
@@ -76,16 +93,7 @@ function TextEditor({ onChange }: { onChange: (e: string) => void }) {
     //       </div>
     //     </div>
     //   </div>
-    <EditorJSComp
-      data={JSON.stringify({
-        type: "header",
-        data: {
-          text: "This is my awesome editor!",
-          level: 1,
-        },
-      })}
-      onChange={onChange}
-    />
+    <EditorJSComp data={data} onChange={onChange} />
     // </div>
   );
 }

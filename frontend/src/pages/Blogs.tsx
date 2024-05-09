@@ -17,12 +17,7 @@ export const Blogs = () => {
   const { loading, blogs, error } = useBlogs();
 
   if (error) {
-    return (
-      <Alert
-        route={`signin`}
-        error={`User not signed in`}
-      />
-    );
+    return <Alert route={`signin`} error={`User not signed in`} />;
   }
 
   if (loading) {

@@ -11,9 +11,9 @@ import { configForBlock } from "./BlocksConfig";
 
 export const FullBlog = ({ blog }: { blog: Blog }) => {
   // console.log(blog.content);
-  const [title] = useState(blog.title);
+  const [title, setTitle] = useState(blog.title);
   const [isEditing, setIsEditing] = useState(false);
-  const [descriptionEdit, setDescriptionEdit] = useState("");
+  const [descriptionEdit, setDescriptionEdit] = useState(blog.content);
   const [loading, setLoading] = useState(false);
 
   return (
@@ -81,7 +81,6 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
               </div>
             </div>
           </div>
-          
         </div>
       ) : (
         <div>
@@ -131,7 +130,13 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
                 </div>
               </div>
               <div className="md:col-span-8 p-4">
-                <div className="text-5xl font-extrabold">{blog.title}</div>
+                <input
+                  type="text"
+                  className="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 text-5xl font-extrabold"
+                  placeholder="Title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
                 <div className="text-slate-500 pt-2">
                   Post on 2nd December 2023
                 </div>

@@ -14,15 +14,15 @@ export const Publish = () => {
     <div>
       <Appbar />
       <div className="flex justify-center w-full pt-8">
-        <div className="max-w-screen-lg w-full">
+        <div className="max-w-screen-lg w-full ">
           <input
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
             type="text"
-            className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+            className="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 text-5xl font-extrabold mb-5"
             placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
+
 
           <TextEditor
             data={JSON.stringify({
@@ -30,8 +30,8 @@ export const Publish = () => {
               blocks: [
                 {
                   id: "-tQr_CUe_H",
-                  type: "header",
-                  data: { text: "This is heading 1", level: 1 },
+                  type: "paragraph",
+                  data: { text: "This is sample paragraph" },
                 },
               ],
               version: "2.29.1",
@@ -40,7 +40,8 @@ export const Publish = () => {
               console.log(e);
               setDescription(e);
             }}
-          />
+            />
+
           <button
             onClick={async () => {
               const response = await axios.post(

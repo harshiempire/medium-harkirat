@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import edjsHTML from "editorjs-html";
 interface BlogCardProps {
   authorName: string;
   title: string;
@@ -14,6 +15,19 @@ export const BlogCard = ({
   content,
   publishedDate,
 }: BlogCardProps) => {
+  const edjsParser = edjsHTML();
+  const HTML = edjsParser.parseStrict(JSON.parse(content));
+  // // returns an error
+  if (HTML instanceof Error) throw HTML;
+
+  // Remove <h1> and <p> tags using regex
+  let cleanedText = HTML[0].replace(/<[^>]*>/g, "");
+
+  cleanedText = cleanedText.replace(/&nbsp;/g, '');
+
+  // Print the cleaned text
+  console.log(cleanedText);
+
   return (
     <Link to={`/blog/${id}`}>
       <div className="p-4 border-b border-slate-200 pb-4 w-screen max-w-screen-md cursor-pointer">
@@ -30,7 +44,10 @@ export const BlogCard = ({
           </div>
         </div>
         <div className="text-xl font-semibold pt-2">{title}</div>
-        <div className="text-md font-thin">{content.slice(0, 100) + "..."}</div>
+        <div className="pt-3"></div>
+        <div className="text-md font-thin">
+          {cleanedText.slice(0, 100) + "..."}
+        </div>
         <div className="text-slate-500 text-sm font-thin pt-4">
           {`${Math.ceil(content.length / 100)} minute(s) read`}
         </div>

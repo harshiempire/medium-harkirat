@@ -16,6 +16,7 @@ const EditorComponent = ({
   data: string;
   onChange: (data: string) => void;
 }) => {
+  let timeoutId: any;
   const ejInstance = useRef<EditorJS | null>(null);
 
   const initEditor = () => {
@@ -23,10 +24,18 @@ const EditorComponent = ({
       holder: "editorjs",
       autofocus: true,
       data: JSON.parse(data),
+
       onChange: async () => {
-        const content = await editor.save();
-        onChange(JSON.stringify(content));
+        // Clear any existing timeout
+        clearTimeout(timeoutId);
+
+        // Set a new timeout
+        timeoutId = setTimeout(async () => {
+          const content = await editor.save();
+          onChange(JSON.stringify(content));
+        }, 500); // Adjust the delay time as needed (e.g., 500 milliseconds)
       },
+
       tools: {
         header: Header,
         paragraph: {
@@ -59,12 +68,12 @@ const EditorComponent = ({
       initEditor();
     }
 
-    return () => {
-      if (ejInstance.current) {
-        ejInstance.current.destroy();
-        ejInstance.current = null;
-      }
-    };
+    // return () => {
+    //   if (ejInstance.current) {
+    //     ejInstance.current.destroy();
+    //     ejInstance.current = null;
+    //   }
+    // };
   }, []);
 
   return <div id="editorjs"></div>;

@@ -2,7 +2,6 @@ import { Blog } from "../hooks";
 import axios from "axios";
 import { Appbar } from "./AppBar";
 import { Avatar } from "./BlogCard";
-import { useNavigate } from "react-router-dom";
 import Blocks from "editorjs-blocks-react-renderer";
 import Button from "./Button";
 import { useState } from "react";
@@ -12,11 +11,11 @@ import { configForBlock } from "./BlocksConfig";
 
 export const FullBlog = ({ blog }: { blog: Blog }) => {
   // console.log(blog.content);
-  const [title, setTitle] = useState(blog.title);
+  const [title] = useState(blog.title);
   const [isEditing, setIsEditing] = useState(false);
   const [descriptionEdit, setDescriptionEdit] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+
   return (
     <>
       {!isEditing ? (
@@ -94,7 +93,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
                     loading={loading}
                     onClick={async () => {
                       setLoading(true);
-                       await axios.put(
+                      await axios.put(
                         `${BACKEND_URL}/api/v1/blog`,
                         {
                           title,

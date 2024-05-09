@@ -1,38 +1,32 @@
 import React, { useEffect, useRef } from "react";
-import EditorJS from "@editorjs/editorjs";
+import EditorJS, { OutputData } from "@editorjs/editorjs";
+// @ts-ignore
 import Header from "@editorjs/header";
+// @ts-ignore
 import Paragraph from "@editorjs/paragraph";
+// @ts-ignore
 import List from "@editorjs/list";
+// @ts-ignore
 import Quote from "@editorjs/quote";
-
-// const DEFAULT_INITIAL_DATA = {
-//   time: new Date().getTime(),
-//   blocks: [],
-// };
 
 const EditorComponent = ({
   data,
   onChange,
 }: {
   data: string;
-  onChange: (e: any) => void;
+  onChange: (data: string) => void;
 }) => {
-  const ejInstance = useRef();
+  const ejInstance = useRef<EditorJS | null>(null);
 
   const initEditor = () => {
     const editor = new EditorJS({
       holder: "editorjs",
-      onReady: () => {
-        ejInstance.current = editor;
-      },
       autofocus: true,
       data: JSON.parse(data),
       onChange: async () => {
-        const content = await editor.saver.save();
+        const content = await editor.save();
         onChange(JSON.stringify(content));
-        console.log(content);
       },
-
       tools: {
         header: Header,
         paragraph: {
@@ -57,25 +51,24 @@ const EditorComponent = ({
         },
       },
     });
+    ejInstance.current = editor;
   };
 
-  // This will run only once
   useEffect(() => {
     if (ejInstance.current === null) {
       initEditor();
     }
 
     return () => {
-      ejInstance?.current?.destroy();
-      ejInstance.current = null;
+      if (ejInstance.current) {
+        ejInstance.current.destroy();
+        ejInstance.current = null;
+      }
     };
   }, []);
 
-  return (
-    <>
-      <div id="editorjs"></div>
-    </>
-  );
+  return <div id="editorjs"></div>;
 };
 
 export default EditorComponent;
+

@@ -1,27 +1,27 @@
-import React, { useState } from 'react'
-import Tiptap from './TipTap'
-import { v4 as uuidv4 } from 'uuid'
+import { useState } from "react";
+import Tiptap from "./TipTap";
+import { v4 as uuidv4 } from "uuid";
 
 const NotePicker = () => {
-  const [content, setContent] = useState<string>('')
+  const [content, setContent] = useState<string>("");
   const handleContentChange = (reason: any) => {
-    setContent(reason)
-  }
+    setContent(reason);
+  };
   const handleSubmit = (e: any) => {
-    e.preventDefault()    
+    e.preventDefault();
     const data = {
       id: uuidv4(),
       content: content,
-    }
-    console.log(data)
-    const existingDataString = localStorage.getItem('myData')
+    };
+    console.log(data);
+    const existingDataString = localStorage.getItem("myData");
     const existingData = existingDataString
       ? JSON.parse(existingDataString)
-      : []
-    const updatedData = [...existingData, data]
-    localStorage.setItem('myData', JSON.stringify(updatedData))
-    setContent('')
-  }
+      : [];
+    const updatedData = [...existingData, data];
+    localStorage.setItem("myData", JSON.stringify(updatedData));
+    setContent("");
+  };
   return (
     <form
       onSubmit={handleSubmit}
@@ -35,7 +35,7 @@ const NotePicker = () => {
         onChange={(newContent: string) => handleContentChange(newContent)}
       />
     </form>
-  )
-}
+  );
+};
 
-export default NotePicker
+export default NotePicker;

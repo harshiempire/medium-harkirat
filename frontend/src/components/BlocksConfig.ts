@@ -24,7 +24,7 @@ export const configForBlock  = {
     className: "list-inside px-4",
   },
   paragraph: {
-    className: "text-base text-opacity-75 py-2",
+    className: "text-base text-opacity-75 py-2 leading-relaxed	",
     actionsClassNames: {
       alignment: "text-{alignment}", // This is a substitution placeholder: left or center.
     },

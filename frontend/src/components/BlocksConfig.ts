@@ -9,7 +9,7 @@ export const configForBlock  = {
     className: "border-0",
   },
   header: {
-    className: "font-bold",
+    className: "font-bold py-2",
     actionsClassNames: {},
   },
   image: {
@@ -21,7 +21,7 @@ export const configForBlock  = {
     },
   },
   list: {
-    className: "list-inside p-3",
+    className: "list-inside px-4",
   },
   paragraph: {
     className: "text-base text-opacity-75 py-2",

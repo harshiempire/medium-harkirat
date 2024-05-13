@@ -31,7 +31,7 @@ export const Publish = () => {
                 {
                   id: "-tQr_CUe_H",
                   type: "paragraph",
-                  data: { text: "This is sample paragraph" },
+                  data: { text: "" },
                 },
               ],
               version: "2.29.1",

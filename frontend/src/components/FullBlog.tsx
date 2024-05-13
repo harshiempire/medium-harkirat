@@ -45,7 +45,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
                 <div className="text-slate-500 pt-2">
                   Post on 2nd December 2023
                 </div>
-                <div className="pt-4 ps-7">
+                <div className="pt-4 sm:ps-7">
                   <Blocks
                     data={JSON.parse(blog.content)}
                     config={configForBlock}

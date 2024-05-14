@@ -22,7 +22,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
         <div>
           <Appbar />
           <div className="">
-            <div className="grid md:grid-cols-12 px-10 w-full pt-200 max-w-screen-xl pt-12">
+            <div className="grid md:grid-cols-12 px-3 sm:px-10 w-full pt-200 max-w-screen-xl pt-12">
               <div className="flex md:hidden ">
                 <div className="w-24">
                   <Button
@@ -41,7 +41,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
                 </div>
               </div>
               <div className="md:col-span-8 p-4">
-                <div className="text-5xl font-extrabold">{blog.title}</div>
+                <div className="text-4xl sm:text-5xl font-extrabold">{blog.title}</div>
                 <div className="text-slate-500 pt-2">
                   Post on 2nd December 2023
                 </div>
@@ -86,7 +86,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
         <div>
           <Appbar />
           <div className="">
-            <div className="grid md:grid-cols-12 px-10 w-full pt-200 max-w-screen-xl pt-12">
+            <div className="grid md:grid-cols-12  sm:px-10  w-full pt-200 max-w-screen-xl pt-12">
               <div className="flex md:hidden ">
                 <div className="w-24">
                   <Button
@@ -132,7 +132,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
               <div className="md:col-span-8 p-4">
                 <input
                   type="text"
-                  className="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 text-5xl font-extrabold"
+                  className="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 text-4xl sm:text-5xl font-extrabold"
                   placeholder="Title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}

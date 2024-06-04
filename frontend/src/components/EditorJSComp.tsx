@@ -37,10 +37,20 @@ const EditorComponent = ({
       },
 
       tools: {
-        header: Header,
+        header: {
+          class: Header,
+          inlineToolbar: true,
+          config: {
+            placeholder: 'Heading'
+          },
+
+        },
         paragraph: {
           class: Paragraph,
           inlineToolbar: true,
+          config: {
+            placeholder: 'Paragraph'
+          },
         },
         list: {
           class: List,

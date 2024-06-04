@@ -7,7 +7,19 @@ import EditorJSComp from "../components/EditorJSComp";
 
 export const Publish = () => {
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState(
+    JSON.stringify({
+      time: 1715148112218,
+      blocks: [
+        {
+          id: "-tQr_CUe_H",
+          type: "paragraph",
+          data: { text: "" },
+        },
+      ],
+      version: "2.29.1",
+    })
+  );
   const navigate = useNavigate();
 
   return (
@@ -23,40 +35,34 @@ export const Publish = () => {
             onChange={(e) => setTitle(e.target.value)}
           />
 
-
           <TextEditor
-            data={JSON.stringify({
-              time: 1715148112218,
-              blocks: [
-                {
-                  id: "-tQr_CUe_H",
-                  type: "paragraph",
-                  data: { text: "" },
-                },
-              ],
-              version: "2.29.1",
-            })}
+            data={description}
             onChange={(e) => {
               console.log(e);
               setDescription(e);
             }}
-            />
+          />
 
           <button
             onClick={async () => {
-              const response = await axios.post(
-                `${BACKEND_URL}/api/v1/blog`,
-                {
-                  title,
-                  content: description,
-                },
-                {
-                  headers: {
-                    Authorization: localStorage.getItem("token"),
+              if (description.includes("[]")) {
+                console.log("Content cannot be empty");
+                return;
+              } else {
+                const response = await axios.post(
+                  `${BACKEND_URL}/api/v1/blog`,
+                  {
+                    title,
+                    content: description,
                   },
-                }
-              );
-              navigate(`/blog/${response.data.id}`);
+                  {
+                    headers: {
+                      Authorization: localStorage.getItem("token"),
+                    },
+                  }
+                );
+                navigate(`/blog/${response.data.id}`);
+              }
             }}
             type="submit"
             className="mt-4 inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"

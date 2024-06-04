@@ -17,14 +17,18 @@ export const BlogCard = ({
 }: BlogCardProps) => {
   const edjsParser = edjsHTML();
   const HTML = edjsParser.parseStrict(JSON.parse(content));
+  console.log("HTML", HTML);
   // // returns an error
-  if (HTML instanceof Error) throw HTML;
+  let cleanedText;
+  if (!(HTML instanceof Error) && HTML.length == 0) {
+    cleanedText = "";
+    console.log("hi", HTML);
+  } else if (!(HTML instanceof Error)) {
+    // Remove <h1> and <p> tags using regex
+    cleanedText = HTML[0].replace(/<[^>]*>/g, "");
 
-  // Remove <h1> and <p> tags using regex
-  let cleanedText = HTML[0].replace(/<[^>]*>/g, "");
-
-  cleanedText = cleanedText.replace(/&nbsp;/g, '');
-
+    cleanedText = cleanedText.replace(/&nbsp;/g, "");
+  }
   // Print the cleaned text
   console.log(cleanedText);
 

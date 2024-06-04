@@ -38,6 +38,7 @@ const EditorComponent = ({
 
       tools: {
         header: {
+          // @ts-ignore
           class: Header,
           inlineToolbar: true,
           config: {

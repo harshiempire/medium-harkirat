@@ -50,7 +50,7 @@ export const BlogCard = ({
         <div className="text-xl font-semibold pt-2">{title}</div>
         <div className="pt-3"></div>
         <div className="text-md font-thin">
-          {cleanedText.slice(0, 100) + "..."}
+          {cleanedText?.slice(0, 100) + "..."}
         </div>
         <div className="text-slate-500 text-sm font-thin pt-4">
           {`${Math.ceil(content.length / 100)} minute(s) read`}
